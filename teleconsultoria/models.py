@@ -9,7 +9,7 @@ class Solicitante(models.Model):
     user = models.ForeignKey(User)
     nome = models.CharField(max_length=255)
     telefone = models.CharField(max_length=25)
-    cpf = models.CharField(max_length=11)
+    cpf = models.CharField(max_length=11, unique=True)
     
 
 class Teleconsultor(models.Model):
