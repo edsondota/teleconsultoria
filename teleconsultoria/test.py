@@ -59,6 +59,7 @@ class TeleconsultoriaTest(TestCase):
                 password="123", email="solicitante@email.com")
         Solicitante.objects.create(user=user_solicitante,
                 nome=u"João Silva", telefone="551122336655", cpf="11122233344")
+
     def test_cria_teleconsultoria(self):
         """ Testando se é possível criar um objeto Teleconsultoria """
         teleconsultor = Teleconsultor.objects.get(crm='BA-1234')
