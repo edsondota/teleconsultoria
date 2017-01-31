@@ -3,6 +3,7 @@ import datetime
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
+from django.core.exceptions import ValidationError
 from teleconsultoria.models import Administrador, Solicitante, Teleconsultor
 from teleconsultoria.models import Teleconsultoria
 
@@ -67,3 +68,12 @@ class TeleconsultoriaTest(TestCase):
         teleconsultoria = Teleconsultoria.objects.create(teleconsultor=teleconsultor,
                 solicitante=solicitante, agendamento_teleconsultoria=datetime.datetime(2017, 1, 30, 20, 52))
         self.assertTrue(teleconsultoria)
+
+    def test_cria_teleconsultoria_mesmo_dia(self):
+        teleconsultor = Teleconsultor.objects.get(crm='BA-1234')
+        solicitante = Solicitante.objects.get(cpf="11122233344")
+        teleconsultoria = Teleconsultoria.objects.create(teleconsultor=teleconsultor,
+                solicitante=solicitante, agendamento_teleconsultoria=datetime.datetime(2017, 1, 30, 20, 52))
+        with self.assertRaises(ValidationError):
+            teleconsultoria_2 = Teleconsultoria.objects.create(teleconsultor=teleconsultor,
+                    solicitante=solicitante, agendamento_teleconsultoria=datetime.datetime(2017, 1, 30, 20, 52))

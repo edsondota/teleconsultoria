@@ -1,5 +1,8 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 class Administrador(models.Model):
     user = models.ForeignKey(User)
@@ -34,3 +37,14 @@ class Teleconsultoria(models.Model):
     status_teleconsultoria = models.CharField(max_length=2,
             choices=STATUS_CHOICES, default=AGUARDANDO)
     data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        dia_atual = datetime.datetime.now()
+        teleconsultoria = Teleconsultoria.objects.filter(solicitante=self.solicitante,
+                data_criacao__year=dia_atual.year,
+                data_criacao__month=dia_atual.month,
+                data_criacao__day=dia_atual.day)
+        if teleconsultoria:
+            raise ValidationError(u'Já existe uma teleconsultoria para este solicitante no dia')
+        super(Teleconsultoria, self).save(*args, **kwargs)
+
