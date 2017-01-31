@@ -33,3 +33,4 @@ class Teleconsultoria(models.Model):
     agendamento_teleconsultoria = models.DateTimeField()
     status_teleconsultoria = models.CharField(max_length=2,
             choices=STATUS_CHOICES, default=AGUARDANDO)
+    data_criacao = models.DateTimeField(auto_now_add=True)
