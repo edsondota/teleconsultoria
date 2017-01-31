@@ -2,6 +2,7 @@ import datetime
 
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.db.utils import IntegrityError
 from teleconsultoria.models import Administrador, Solicitante, Teleconsultor
 from teleconsultoria.models import Teleconsultoria
 
@@ -28,7 +29,11 @@ class SolicitanteTest(TestCase):
         self.assertTrue(solicitante)
 
     def test_solicitante_unico(self):
-        pass
+        user_solicitante = User.objects.create(username="solicitante_2",
+                password="123", email="solicitante_2@email.com")
+        with self.assertRaises(IntegrityError):
+            solicitante = Solicitante.objects.create(user=user_solicitante,
+                    nome=u"João Silva", telefone="551122336655", cpf="11122233344")
 
 
 class TeleconsultorTest(TestCase):
