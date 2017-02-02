@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teleconsultoria - Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+
+    <form action="{% url 'login_view' %}" method="POST">
+        <div>
+            {% csrf_token %}
+            <p>
+                <label for="username">Nome de usuário</label> <br>
+                <input type="text" name="username" id="username">
+            </p>
+            <p>
+                <label for="senha">Senha</label> <br>
+                <input type="password" name="senha" id="senha">
+            </p>
+            <p>
+                <input type="submit" value="Login">
+            </p>
+        </div>
+    </form>
+</body>
+</html>
