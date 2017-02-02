@@ -1,11 +1,12 @@
 import datetime
 
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
 from teleconsultoria.models import Administrador, Solicitante, Teleconsultor
 from teleconsultoria.models import Teleconsultoria
+from teleconsultoria.views import LoginView
 
 
 class AdministradorTest(TestCase):
@@ -77,3 +78,13 @@ class TeleconsultoriaTest(TestCase):
         with self.assertRaises(ValidationError):
             teleconsultoria_2 = Teleconsultoria.objects.create(teleconsultor=teleconsultor,
                     solicitante=solicitante, agendamento_teleconsultoria=datetime.datetime(2017, 1, 30, 20, 52))
+
+
+class ViewTest(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def testaViewLogin(self):
+        request = self.factory.get('/')
+        response = LoginView.as_view()(request)
+        self.assertEqual(response.status_code, 200)
