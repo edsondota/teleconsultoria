@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teleconsultoria - Adicionar Teleconsultor</title>
+</head>
+<body>
+    <h1>Adicionar Teleconsultor</h1>
+
+    <p>
+        <a href="{% url 'gerenciar_teleconsultor_view' %}">Voltar para gerenciar teleconsultores</a>
+    </p>
+
+    <div>
+        <form action="{% url 'adicionar_teleconsultor_view' %}" method="POST">
+            {% csrf_token %}
+            <p>
+                <label for="username">Nome de usuário</label> <br>
+                <input type="text" name="username" id="username" required>
+            </p>
+
+            <p>
+                <label for="email">E-mail</label> <br>
+                <input type="email" name="email" id="email" required>
+            </p>
+
+            <p>
+                <label for="password">Senha</label> <br>
+                <input type="password" id="password" name="password" required>
+            </p>
+
+            <p>
+                <label for="nome">Nome</label> <br>
+                <input type="text" name="nome" id="nome" required>
+            </p>
+
+            <p>
+                <label for="crm">CRM</label> <br>
+                <input type="text" name="crm" id="crm" maxlength="10" required>
+            </p>
+
+            <p>
+                <label for="data_formatura">Data de Formatura</label> <br>
+                <input type="date" name="data_formatura" id="data_formatura" required>
+            </p>
+
+            <p><input type="submit" value="Salvar"></p>
+        </form>
+    </div>
+</body>
+</html>

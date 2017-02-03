@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teleconsultoria - Gerenciar Teleconsultor</title>
+</head>
+<body>
+    <h1>Gerenciar Teleconsultor</h1>
+    <p>
+        <a href="{% url 'painel_view' %}">Voltar ao painel</a>
+    </p>
+
+    <p>
+        <a href="{% url 'adicionar_teleconsultor_view' %}">Adicionar Teleconsultor</a>
+    </p>
+
+    <table border="1" width="100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Usuário</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>CRM</th>
+                <th>Data Formatura</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tele in teleconsultores %}
+            <tr>
+                <td>{{ tele.id }}</td>
+                <td>{{ tele.user.username }}</td>
+                <td>{{ tele.nome }}</td>
+                <td>{{ tele.user.email }}</td>
+                <td>{{ tele.crm }}</td>
+                <td>{{ tele.data_formatura }}</td>
+                <td>
+                    <a href="#">Editar</a>
+                    <a href="#">Apagar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Nenhum Teleconsultor cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</body>
+</html>

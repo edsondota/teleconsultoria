@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -37,3 +39,32 @@ class GerenciarTeleconsultorView(View):
     def get(self, request):
         teleconsultores = Teleconsultor.objects.all()
         return render(request, 'teleconsultoria/gerenciar_teleconsultor.html', locals())
+
+
+class AdicionarTeleconsultorView(View):
+    def get(self, request):
+        return render(request, 'teleconsultoria/adicionar_teleconsultor.html', locals())
+
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+        nome = request.POST['nome']
+        crm = request.POST['crm']
+        data_formatura = datetime.datetime.strptime(request.POST['data_formatura'], '%Y-%m-%d')
+        usuario = None
+        try:
+            usuario = User.objects.create_user(
+                    username=username, password=password, email=email)
+            teleconsultor = Teleconsultor.objects.create(
+                user = usuario,
+                nome = nome,
+                crm = crm,
+                data_formatura = data_formatura
+            )
+        except:
+            if usuario:
+                usuario.delete()
+            messages.error(request, u'Não foi possível cadastrar o Teleconsultor', extra_tags='danger')
+            return redirect('adicionar_teleconsultor_view')
+        return redirect('gerenciar_teleconsultor_view')
