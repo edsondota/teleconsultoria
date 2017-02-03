@@ -21,6 +21,17 @@ class LoginView(View):
         return redirect('login_view')
 
 
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('login_view')
+
+
 class PainelAdminView(View):
     def get(self, request):
         return render(request, 'teleconsultoria/painel_admin.html', locals())
+
+
+class GerenciarTeleconsultorView(View):
+    def get(self, request):
+        return render(request, 'teleconsultoria/gerenciar_teleconsultor.html', locals())

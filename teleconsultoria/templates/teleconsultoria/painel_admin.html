@@ -6,6 +6,10 @@
 </head>
 <body>
     <h1>Painel</h1>
+    <p>
+        Olá {{ request.user.username }},
+        <a href="{% url 'logout_view' %}">sair</a>.
+    </p>
     <ul>
         <li><a href="#">Gerenciar Teleconsultores</a></li>
         <li><a href="#">Gerenciar Solicitantes</a></li>
