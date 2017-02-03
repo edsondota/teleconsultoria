@@ -11,6 +11,12 @@
         <a href="{% url 'gerenciar_teleconsultor_view' %}">Voltar para gerenciar teleconsultores</a>
     </p>
 
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
     <div>
         <form action="{% url 'adicionar_teleconsultor_view' %}" method="POST">
             {% csrf_token %}
