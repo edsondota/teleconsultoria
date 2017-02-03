@@ -1,6 +1,7 @@
 import datetime
 
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, Client
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from django.core.exceptions import ValidationError
@@ -82,9 +83,20 @@ class TeleconsultoriaTest(TestCase):
 
 class ViewTest(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
+        self.client = Client()
+        self.user = User.objects.create_user(
+                username="admin", email="admin@admin.com")
+        self.user.set_password('123')
+        self.user.save()
 
-    def testaViewLogin(self):
-        request = self.factory.get('/')
-        response = LoginView.as_view()(request)
+    def test_criacao_user(self):
+        self.assertTrue(self.user)
+
+    def test_view_login(self):
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_auth_simples_login(self):
+        self.client.login(username='admin', password='123')
+        response = self.client.get('/painel/administracao')
         self.assertEqual(response.status_code, 200)
