@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.generic import View
+from teleconsultoria.models import Teleconsultor, Solicitante
 
 
 class LoginView(View):
@@ -34,4 +35,5 @@ class PainelAdminView(View):
 
 class GerenciarTeleconsultorView(View):
     def get(self, request):
+        teleconsultores = Teleconsultor.objects.all()
         return render(request, 'teleconsultoria/gerenciar_teleconsultor.html', locals())

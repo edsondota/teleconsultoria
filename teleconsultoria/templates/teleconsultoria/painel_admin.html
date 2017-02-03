@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Teleconsultor - Painel Administrativo</title>
+    <title>Teleconsultoria - Painel Administrativo</title>
 </head>
 <body>
     <h1>Painel</h1>
@@ -11,7 +11,8 @@
         <a href="{% url 'logout_view' %}">sair</a>.
     </p>
     <ul>
-        <li><a href="#">Gerenciar Teleconsultores</a></li>
+        <li><a href="{% url 'gerenciar_teleconsultor_view' %}">
+                Gerenciar Teleconsultores</a></li>
         <li><a href="#">Gerenciar Solicitantes</a></li>
     </ul>
 </body>
