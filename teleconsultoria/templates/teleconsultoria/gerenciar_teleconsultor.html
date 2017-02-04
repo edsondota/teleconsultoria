@@ -43,7 +43,11 @@
                 <td>{{ tele.data_formatura }}</td>
                 <td>
                     <a href="{% url 'editar_teleconsultor_view' %}?id={{ tele.id }}">Editar</a>
-                    <a href="#">Apagar</a>
+                    <form action="{% url 'apagar_teleconsultor_view' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Apagar" onclick="return confirmar_delete()">
+                        <input type="hidden" name="id" value="{{ tele.id }}">
+                    </form>
                 </td>
             </tr>
             {% empty %}
@@ -53,6 +57,12 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <script>
+        function confirmar_delete(){
+            return confirm("Você tem certeza que deseja excluir o Teleconsultor?")
+        }
+    </script>
     
 </body>
 </html>

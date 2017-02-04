@@ -105,3 +105,17 @@ class EditarTeleconsultorView(View):
             return redirect('editar_teleconsultor_view')
         messages.success(request, u'Teleconsultor alterado com sucesso')
         return redirect('gerenciar_teleconsultor_view')
+
+
+class ApagarTeleconsultorView(View):
+    def post(self, request):
+        try:
+            teleconsultor = Teleconsultor.objects.get(id=request.POST['id'])
+            teleconsultor.user.delete()
+            teleconsultor.delete()
+            messages.success(request, u'Teleconsultor excluído com sucesso')
+            return redirect('gerenciar_teleconsultor_view')
+        except:
+            messages.error(request, u'Não foi possível apagar o teleconsultor. Teleconsultor não encontrado')
+            return redirect('gerenciar_teleconsultor_view')
+
