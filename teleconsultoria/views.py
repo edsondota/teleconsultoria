@@ -65,6 +65,43 @@ class AdicionarTeleconsultorView(View):
         except:
             if usuario:
                 usuario.delete()
-            messages.error(request, u'Não foi possível cadastrar o Teleconsultor', extra_tags='danger')
+            messages.error(request, u'Não foi possível cadastrar o Teleconsultor')
             return redirect('adicionar_teleconsultor_view')
+        messages.success(request, u'Teleconsultor cadastrado com sucesso')
+        return redirect('gerenciar_teleconsultor_view')
+
+
+class EditarTeleconsultorView(View):
+    def get(self, request):
+        try:
+            teleconsultor = Teleconsultor.objects.get(id=request.GET['id'])
+        except:
+            messages.error(request, u'O Teleconsultor não foi encontrado')
+            return redirect('gerenciar_teleconsultor_view')
+        return render(request, 'teleconsultoria/editar_teleconsultor.html', locals())
+
+    def post(self, request):
+        teleconsultor = None
+        try:
+            teleconsultor = Teleconsultor.objects.get(id=request.POST['id'])
+        except:
+            messages.error(request, u'O Teleconsultor não foi encontrado')
+            return redirect('gerenciar_teleconsultor_view')
+        username = request.POST['username']
+        email = request.POST['email']
+        nome = request.POST['nome']
+        crm = request.POST['crm']
+        data_formatura = datetime.datetime.strptime(request.POST['data_formatura'], '%Y-%m-%d')
+        try:
+            teleconsultor.user.username = username
+            teleconsultor.user.email = email
+            teleconsultor.nome = nome
+            teleconsultor.crm = crm
+            teleconsultor.data_formatura = data_formatura
+            teleconsultor.user.save()
+            teleconsultor.save()
+        except:
+            messages.error(request, u'Não foi possível editar o Teleconsultor')
+            return redirect('editar_teleconsultor_view')
+        messages.success(request, u'Teleconsultor alterado com sucesso')
         return redirect('gerenciar_teleconsultor_view')

@@ -10,6 +10,12 @@
         <a href="{% url 'painel_view' %}">Voltar ao painel</a>
     </p>
 
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
     <p>
         <a href="{% url 'adicionar_teleconsultor_view' %}">Adicionar Teleconsultor</a>
     </p>
@@ -36,7 +42,7 @@
                 <td>{{ tele.crm }}</td>
                 <td>{{ tele.data_formatura }}</td>
                 <td>
-                    <a href="#">Editar</a>
+                    <a href="{% url 'editar_teleconsultor_view' %}?id={{ tele.id }}">Editar</a>
                     <a href="#">Apagar</a>
                 </td>
             </tr>

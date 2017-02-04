@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from teleconsultoria.views import LoginView, LogoutView, PainelAdminView
 from teleconsultoria.views import GerenciarTeleconsultorView, AdicionarTeleconsultorView
+from teleconsultoria.views import EditarTeleconsultorView
 
 urlpatterns = [
     url(r'^$', LoginView.as_view(), name="login_view"),
@@ -15,5 +16,8 @@ urlpatterns = [
     url(r'painel/adicionar-teleconsultor$',
         login_required(AdicionarTeleconsultorView.as_view()),
         name="adicionar_teleconsultor_view"),
+    url(r'painel/editar-teleconsultor$',
+        login_required(EditarTeleconsultorView.as_view()),
+        name="editar_teleconsultor_view"),
     url(r'^admin/', include(admin.site.urls)),
 ]
