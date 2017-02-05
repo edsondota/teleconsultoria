@@ -37,7 +37,7 @@ class BaseAdminView(View):
             messages.error(request, 'Você não tem acesso a esta função')
             return redirect('logout_view')
         return super(BaseAdminView, self).dispatch(*args, **kwargs)
-            
+
 
 class PainelAdminView(BaseAdminView):
     def get(self, request):

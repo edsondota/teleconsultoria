@@ -9,14 +9,14 @@ class Administrador(models.Model):
 
 
 class Solicitante(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     nome = models.CharField(max_length=255)
     telefone = models.CharField(max_length=25)
     cpf = models.CharField(max_length=11, unique=True)
     
 
 class Teleconsultor(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     nome = models.CharField(max_length=255)
     crm = models.CharField(max_length=10)
     data_formatura = models.DateField()
