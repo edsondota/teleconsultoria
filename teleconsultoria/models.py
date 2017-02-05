@@ -48,6 +48,7 @@ class Teleconsultoria(models.Model):
     status_teleconsultoria = models.CharField(max_length=2,
             choices=STATUS_CHOICES, default=AGUARDANDO)
     data_criacao = models.DateTimeField(auto_now_add=True)
+    texto = models.TextField()
 
     def save(self, *args, **kwargs):
         dia_atual = datetime.datetime.now()
