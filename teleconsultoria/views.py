@@ -154,3 +154,39 @@ class AdicionarSolicitanteView(View):
             return redirect('adicionar_solicitante_view')
         messages.success(request, u'Solicitante cadastrado com sucesso')
         return redirect('gerenciar_solicitante_view')
+
+
+class EditarSolicitanteView(View):
+    def get(self, request):
+        try:
+            solicitante = Solicitante.objects.get(id=request.GET['id'])
+        except:
+            messages.error(request, u'O Solicitante não foi encontrado')
+            return redirect('gerenciar_solicitante_view')
+        return render(request, 'teleconsultoria/editar_solicitante.html', locals())
+
+    def post(self, request):
+        solicitante = None
+        try:
+            solicitante = Solicitante.objects.get(id=request.POST['id'])
+        except:
+            messages.error(request, u'O Solicitante não foi encontrado')
+            return redirect('gerenciar_solicitante_view')
+        username = request.POST['username']
+        email = request.POST['email']
+        nome = request.POST['nome']
+        cpf = request.POST['cpf']
+        telefone = request.POST['telefone']
+        try:
+            solicitante.user.username = username
+            solicitante.user.email = email
+            solicitante.nome = nome
+            solicitante.cpf = cpf
+            solicitante.telefone =telefone 
+            solicitante.user.save()
+            solicitante.save()
+        except:
+            messages.error(request, u'Não foi possível editar o Solicitante')
+            return redirect('editar_solicitante_view')
+        messages.success(request, u'Solicitante alterado com sucesso')
+        return redirect('gerenciar_solicitante_view')

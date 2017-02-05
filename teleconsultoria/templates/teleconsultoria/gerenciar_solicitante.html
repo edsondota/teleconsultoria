@@ -42,7 +42,7 @@
                 <td>{{ s.cpf }}</td>
                 <td>{{ s.telefone }}</td>
                 <td>
-                    <a href="#">Editar</a>
+                    <a href="{% url 'editar_solicitante_view' %}?id={{ s.id }}">Editar</a>
                     <form action="#" method="POST">
                         {% csrf_token %}
                         <input type="submit" value="Apagar" onclick="return confirmar_delete()">
