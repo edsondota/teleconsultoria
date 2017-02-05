@@ -43,7 +43,7 @@
                 <td>{{ s.telefone }}</td>
                 <td>
                     <a href="{% url 'editar_solicitante_view' %}?id={{ s.id }}">Editar</a>
-                    <form action="#" method="POST">
+                    <form action="{% url 'apagar_solicitante_view' %}" method="POST">
                         {% csrf_token %}
                         <input type="submit" value="Apagar" onclick="return confirmar_delete()">
                         <input type="hidden" name="id" value="{{ s.id }}">

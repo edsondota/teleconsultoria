@@ -190,3 +190,16 @@ class EditarSolicitanteView(View):
             return redirect('editar_solicitante_view')
         messages.success(request, u'Solicitante alterado com sucesso')
         return redirect('gerenciar_solicitante_view')
+
+
+class ApagarSolicitanteView(View):
+    def post(self, request):
+        try:
+            solicitante = Solicitante.objects.get(id=request.POST['id'])
+            solicitante.user.delete()
+            solicitante.delete()
+            messages.success(request, u'Solicitante excluído com sucesso')
+            return redirect('gerenciar_solicitante_view')
+        except:
+            messages.error(request, u'Não foi possível apagar o solicitante. Solicitante não encontrado')
+            return redirect('gerenciar_solicitante_view')
