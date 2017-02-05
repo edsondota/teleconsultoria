@@ -11,6 +11,12 @@
         <a href="{% url 'logout_view' %}">sair</a>.
     </p>
 
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
     {% if solicitante.pode_criar_teleconsultoria %}
     <p><a href="{% url 'adicionar_teleconsultoria_view' %}">
             Adicionar Solicitação</a></p>
@@ -25,6 +31,7 @@
                 <th>Data Agendamento</th>
                 <th>Status</th>
                 <th>Data Criação</th>
+                <th>Texto</th>
             </tr>
         </thead>
         <tbody>
@@ -32,8 +39,9 @@
             <tr>
                 <td>{{ t.id }}</td>
                 <td>{{ t.agendamento_teleconsultoria }}</td>
-                <td>{{ t.status_teleconsultoria }}</td>
+                <td>{{ t.get_status_teleconsultoria_display }}</td>
                 <td>{{ t.data_criacao }}</td>
+                <td>{{ t.texto }}</td>
             </tr>
             {% empty %}
             <tr>

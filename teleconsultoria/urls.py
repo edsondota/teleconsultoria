@@ -42,7 +42,7 @@ urlpatterns = [
     url(r'solicitante/painel-solicitantes$',
         login_required(PainelSolicitanteView.as_view()),
         name="painel_solicitante_view"),
-    url(r'solicitant/adicionar-teleconsultoria$',
+    url(r'solicitante/adicionar-teleconsultoria$',
         login_required(AdicionarTeleconsultoriaView.as_view()),
         name="adicionar_teleconsultoria_view"),
     url(r'^admin/', include(admin.site.urls)),

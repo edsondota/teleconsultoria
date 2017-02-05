@@ -32,7 +32,12 @@
 
             <p>
                 <label for="agendamento_teleconsultoria">Agendamento Teleconsultoria</label> <br>
-                <input type="datetime" name="agendamento_teleconsultoria" id="agendamento_teleconsultoria" required>
+                <input type="datetime-local" name="agendamento_teleconsultoria" id="agendamento_teleconsultoria" required>
+            </p>
+
+            <p>
+                <label for="texto">Texto do Teleconsultoria</label> <br>
+                <textarea id="texto" name="texto" cols="30" rows="10" required></textarea>
             </p>
 
             <p><input type="submit" value="Salvar"></p>

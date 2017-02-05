@@ -249,5 +249,28 @@ class PainelSolicitanteView(BaseSolicitanteView):
 
 class AdicionarTeleconsultoriaView(BaseSolicitanteView):
     def get(self, request):
-        teleconsultores = Teleconsultor.objects.all()
-        return render(request, 'teleconsultoria/adicionar_teleconsultoria.html', locals())
+        if request.user.solicitante.pode_criar_teleconsultoria:
+            teleconsultores = Teleconsultor.objects.all()
+            return render(request, 'teleconsultoria/adicionar_teleconsultoria.html', locals())
+        messages.error(request, 'Você não pode criar teleconsultorias por hoje')
+        return redirect('painel_solicitante_view')
+
+    def post(self, request):
+        teleconsultor = None
+        try:
+            teleconsultor = Teleconsultor.objects.get(id=request.POST['teleconsultor'])
+        except:
+            messages.error(request, 'Não foi encontrado o teleconsultor informado')
+            return redirect('adicionar_teleconsultoria_view')
+        agendamento_teleconsultoria = datetime.datetime.strptime(request.POST['agendamento_teleconsultoria'], '%Y-%m-%dT%H:%M')
+        texto = request.POST['texto']
+        try:
+            teleconsultoria = Teleconsultoria.objects.create(solicitante=request.user.solicitante,
+                    teleconsultor=teleconsultor,
+                    agendamento_teleconsultoria=agendamento_teleconsultoria,
+                    texto=texto)
+            messages.success(request, u'Teleconsultoria cadastrada com sucesso')
+            return redirect('painel_solicitante_view')
+        except:
+            messages.error(request, 'Ocorreu um erro ao salvar a teleconsultoria')
+            return redirect('adicionar_teleconsultoria_view')
