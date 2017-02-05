@@ -1,1 +1,5 @@
 # Relatório de desenvolvimento
+
+## Problemas
+
+Não conseguir a tempo fazer todos os testes unitários para as views criadas, o que seria o ideal.

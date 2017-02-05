@@ -30,18 +30,27 @@ class LogoutView(View):
         return redirect('login_view')
 
 
-class PainelAdminView(View):
+class BaseAdminView(View):
+    def dispatch(self, *args, **kwargs):
+        request = self.request
+        if not request.user.is_superuser:
+            messages.error(request, 'Você não tem acesso a esta função')
+            return redirect('logout_view')
+        return super(BaseAdminView, self).dispatch(*args, **kwargs)
+            
+
+class PainelAdminView(BaseAdminView):
     def get(self, request):
         return render(request, 'teleconsultoria/painel_admin.html', locals())
 
 
-class GerenciarTeleconsultorView(View):
+class GerenciarTeleconsultorView(BaseAdminView):
     def get(self, request):
         teleconsultores = Teleconsultor.objects.all()
         return render(request, 'teleconsultoria/gerenciar_teleconsultor.html', locals())
 
 
-class AdicionarTeleconsultorView(View):
+class AdicionarTeleconsultorView(BaseAdminView):
     def get(self, request):
         return render(request, 'teleconsultoria/adicionar_teleconsultor.html', locals())
 
@@ -71,7 +80,7 @@ class AdicionarTeleconsultorView(View):
         return redirect('gerenciar_teleconsultor_view')
 
 
-class EditarTeleconsultorView(View):
+class EditarTeleconsultorView(BaseAdminView):
     def get(self, request):
         try:
             teleconsultor = Teleconsultor.objects.get(id=request.GET['id'])
@@ -107,7 +116,7 @@ class EditarTeleconsultorView(View):
         return redirect('gerenciar_teleconsultor_view')
 
 
-class ApagarTeleconsultorView(View):
+class ApagarTeleconsultorView(BaseAdminView):
     def post(self, request):
         try:
             teleconsultor = Teleconsultor.objects.get(id=request.POST['id'])
@@ -120,13 +129,13 @@ class ApagarTeleconsultorView(View):
             return redirect('gerenciar_teleconsultor_view')
 
 
-class GerenciarSolicitanteView(View):
+class GerenciarSolicitanteView(BaseAdminView):
     def get(self, request):
         solicitantes = Solicitante.objects.all()
         return render(request, 'teleconsultoria/gerenciar_solicitante.html', locals())
 
 
-class AdicionarSolicitanteView(View):
+class AdicionarSolicitanteView(BaseAdminView):
     def get(self, request):
         return render(request, 'teleconsultoria/adicionar_solicitante.html', locals())
 
@@ -156,7 +165,7 @@ class AdicionarSolicitanteView(View):
         return redirect('gerenciar_solicitante_view')
 
 
-class EditarSolicitanteView(View):
+class EditarSolicitanteView(BaseAdminView):
     def get(self, request):
         try:
             solicitante = Solicitante.objects.get(id=request.GET['id'])
@@ -192,7 +201,7 @@ class EditarSolicitanteView(View):
         return redirect('gerenciar_solicitante_view')
 
 
-class ApagarSolicitanteView(View):
+class ApagarSolicitanteView(BaseAdminView):
     def post(self, request):
         try:
             solicitante = Solicitante.objects.get(id=request.POST['id'])
