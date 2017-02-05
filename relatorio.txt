@@ -2,4 +2,20 @@
 
 ## Problemas
 
-Não conseguir a tempo fazer todos os testes unitários para as views criadas, o que seria o ideal.
+* Não conseguir a tempo fazer todos os testes unitários para as views criadas, o que seria o ideal.
+* Acabei por não utilizar o forms do django, devido ao prazo e o tempo que não trabalhava com os forms.
+* Não utilizei nenhum framework CSS, apesar de conhecê-los, para entregar um projeto funcional no tempo hábil.
+
+## Visão Geral
+
+Desenvolvi o projeto seguindo minha linha de desenvolvimento. Tenho alguns vícios como programador, como:
+
+* Não seguir sempre as RFC;
+* Fazer commits grandes, com mensagens pouco explicativas;
+
+Porém, acredito ter a desenvoltura necessária para:
+
+* Entender bem problemas complexos;
+* Encontrar soluções simples;
+* Resolver rapidamente situações de risco;
+* Desenvolver modelagem e fazer análises corretas.
