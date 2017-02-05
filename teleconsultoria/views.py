@@ -119,3 +119,8 @@ class ApagarTeleconsultorView(View):
             messages.error(request, u'Não foi possível apagar o teleconsultor. Teleconsultor não encontrado')
             return redirect('gerenciar_teleconsultor_view')
 
+
+class GerenciarSolicitanteView(View):
+    def get(self, request):
+        solicitantes = Solicitante.objects.all()
+        return render(request, 'teleconsultoria/gerenciar_solicitante.html', locals())

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teleconsultoria - Gerenciar Solicitante</title>
+</head>
+<body>
+    <h1>Gerenciar Solicitante</h1>
+    <p>
+        <a href="{% url 'painel_view' %}">Voltar ao painel</a>
+    </p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <p>
+        <a href="#">Adicionar Solicitante</a>
+    </p>
+
+    <table border="1" width="100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Usuário</th>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in solicitantes %}
+            <tr>
+                <td>{{ s.id }}</td>
+                <td>{{ s.user.username }}</td>
+                <td>{{ s.nome }}</td>
+                <td>{{ s.user.email }}</td>
+                <td>{{ s.cpf }}</td>
+                <td>{{ s.telefone }}</td>
+                <td>
+                    <a href="#">Editar</a>
+                    <form action="#" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Apagar" onclick="return confirmar_delete()">
+                        <input type="hidden" name="id" value="{{ s.id }}">
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7">Nenhum solicitante cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function confirmar_delete(){
+            return confirm("Você tem certeza que deseja excluir o Solicitante?")
+        }
+    </script>
+    
+</body>
+</html>
