@@ -118,3 +118,23 @@ Aceita uma teleconsultoria cadastrada.
 
 ### /teleconsultor/cancelar-teleconsultoria
 Cancela uma teleconsultoria cadastrada.
+
+## Deploy no Heroku
+Para fazer deploy no Heroku, faça:
+
+* Faça um fork do projeto no seu github
+* Acesse o Heroku e crie um novo app
+* Selecione como Deployment Method o Github
+* Em App connected Github selecione o projeto que fez o fork
+* Em Automatic Deploy selecione o branch que, quando receber um novo commit fará deploy (necessário clicar em Enable Automatic Deploy)
+* Adicione o Heroku Postgres como addon
+* Altere o arquivo ```teleconsultoria/settings_heroku.py``` com as configurações do ```Postgresql```
+* Instale o [heroku cli]([https://devcenter.heroku.com/articles/heroku-cli). Para rodar os comandos de criação de superuser
+* Rode o commando:
+```bash
+$ heroku login
+$ heroku run bash --app <nome da sua app>
+$ python manage.py createsuperuser --settings=teleconsultoria.settings_heroku
+```
+
+Feito isto a aplicação está pronta para ser utilizada no heroku.
