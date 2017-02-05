@@ -51,7 +51,7 @@ urlpatterns = [
     url(r'teleconsultor/painel$',
         login_required(PainelTeleconsultorView.as_view()),
         name="painel_teleconsultor_view"),
-    url(r'teleconsultor/aceitar_teleconsultoria_view$',
+    url(r'teleconsultor/aceitar-teleconsultoria$',
         login_required(AceitarTeleconsultoriaView.as_view()),
         name="aceitar_teleconsultoria_view"),
     url(r'teleconsultor/cancelar-teleconsultoria$',
