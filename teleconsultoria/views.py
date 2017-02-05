@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from teleconsultoria.models import Teleconsultor, Solicitante
+from teleconsultoria.models import Teleconsultor, Solicitante, Teleconsultoria
 
 
 class LoginView(View):
@@ -18,9 +18,10 @@ class LoginView(View):
             username = request.POST.get('username')
             password = request.POST.get('password')
             user = authenticate(username=username, password=password)
-            if user is not None and user.is_active:
+            if user is not None and user.is_active and user.is_superuser:
                 login(request, user)
                 return redirect('painel_view')
+        messages.error(request, 'Não foi possível realizar seu login')
         return redirect('login_view')
 
 
@@ -37,6 +38,15 @@ class BaseAdminView(View):
             messages.error(request, 'Você não tem acesso a esta função')
             return redirect('logout_view')
         return super(BaseAdminView, self).dispatch(*args, **kwargs)
+
+
+class BaseSolicitanteView(View):
+    def dispatch(self, *args, **kwargs):
+        request = self.request
+        if not request.user.solicitante:
+            messages.error(request, 'Você não tem acesso a esta função')
+            return redirect('logout_view')
+        return super(BaseSolicitanteView, self).dispatch(*args, **kwargs)
 
 
 class PainelAdminView(BaseAdminView):
@@ -212,3 +222,25 @@ class ApagarSolicitanteView(BaseAdminView):
         except:
             messages.error(request, u'Não foi possível apagar o solicitante. Solicitante não encontrado')
             return redirect('gerenciar_solicitante_view')
+
+
+class LoginSolicitanteView(View):
+    def get(self, request):
+        return render(request, 'teleconsultoria/login_solicitante.html', locals())
+
+    def post(self, request):
+        if request.POST.get('username') and request.POST.get('password'):
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None and user.is_active and user.solicitante:
+                login(request, user)
+                return redirect('painel_solicitante_view')
+        messages.error(request, 'Não foi possível realizar seu login')
+        return redirect('login_solicitante_view')
+
+
+class PainelSolicitanteView(BaseSolicitanteView):
+    def get(self, request):
+        teleconsultorias = Teleconsultoria.objects.filter(solicitante=request.user.solicitante)
+        return render(request, 'teleconsultoria/painel_solicitante.html', locals())

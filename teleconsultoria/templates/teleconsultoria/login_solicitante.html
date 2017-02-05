@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teleconsultoria - Login Solicitante</title>
+</head>
+<body>
+    <h1>Login Solicitante</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form action="{% url 'login_solicitante_view' %}" method="POST">
+        <div>
+            {% csrf_token %}
+            <p>
+                <label for="username">Nome de usuário</label> <br>
+                <input type="text" name="username" id="username">
+            </p>
+            <p>
+                <label for="password">Senha</label> <br>
+                <input type="password" name="password" id="password">
+            </p>
+            <p>
+                <input type="submit" value="Login">
+            </p>
+        </div>
+    </form>
+</body>
+</html>

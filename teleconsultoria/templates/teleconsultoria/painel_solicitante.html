@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teleconsultoria - Painel Solicitante</title>
+</head>
+<body>
+    <h1>Painel</h1>
+    <p>
+        Olá {{ request.user.solicitante.nome }},
+        <a href="{% url 'logout_view' %}">sair</a>.
+    </p>
+
+    <p><a href="#">Adicionar Solicitação</a></p>
+
+    <table border="1" width="100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Data Agendamento</th>
+                <th>Status</th>
+                <th>Data Criação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t  in teleconsultorias %}
+            <tr>
+                <td>{{ t.id }}</td>
+                <td>{{ t.agendamento_teleconsultoria }}</td>
+                <td>{{ t.status_teleconsultoria }}</td>
+                <td>{{ t.data_criacao }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">Nenhuma teleconsultoria registrada</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
