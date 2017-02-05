@@ -99,4 +99,4 @@ class ViewTest(TestCase):
     def test_auth_simples_login(self):
         self.client.login(username='admin', password='123')
         response = self.client.get('/painel/administracao')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)

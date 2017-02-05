@@ -34,11 +34,11 @@ class Teleconsultor(models.Model):
 
 
 class Teleconsultoria(models.Model):
-    ATENDIDO = 'AT'
+    ACEITA = 'AC'
     CANCELADO = 'CN'
     AGUARDANDO = 'AG'
     STATUS_CHOICES = (
-        (ATENDIDO, 'Atendido'),
+        (ACEITA, 'Aceita'),
         (CANCELADO, 'Cancelado'),
         (AGUARDANDO, 'Aguardando'),
     )
@@ -51,12 +51,12 @@ class Teleconsultoria(models.Model):
     texto = models.TextField()
 
     def save(self, *args, **kwargs):
-        dia_atual = datetime.datetime.now()
-        teleconsultoria = Teleconsultoria.objects.filter(solicitante=self.solicitante,
-                data_criacao__year=dia_atual.year,
-                data_criacao__month=dia_atual.month,
-                data_criacao__day=dia_atual.day)
-        if teleconsultoria:
-            raise ValidationError(u'Já existe uma teleconsultoria para este solicitante no dia')
+        if not self.id:
+            dia_atual = datetime.datetime.now()
+            teleconsultoria = Teleconsultoria.objects.filter(solicitante=self.solicitante,
+                    data_criacao__year=dia_atual.year,
+                    data_criacao__month=dia_atual.month,
+                    data_criacao__day=dia_atual.day)
+            if teleconsultoria:
+                raise ValidationError(u'Já existe uma teleconsultoria para este solicitante no dia')
         super(Teleconsultoria, self).save(*args, **kwargs)
-

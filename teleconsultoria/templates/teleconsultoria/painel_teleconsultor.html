@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teleconsultoria - Painel Teleconsultor</title>
+</head>
+<body>
+    <h1>Painel</h1>
+    <p>
+        Olá {{ request.user.teleconsultor.nome }},
+        <a href="{% url 'logout_view' %}">sair</a>.
+    </p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <table border="1" width="100%">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Data Agendamento</th>
+                <th>Status</th>
+                <th>Data Criação</th>
+                <th>Texto</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for t  in teleconsultorias %}
+            <tr>
+                <td>{{ t.id }}</td>
+                <td>{{ t.agendamento_teleconsultoria }}</td>
+                <td>{{ t.get_status_teleconsultoria_display }}</td>
+                <td>{{ t.data_criacao }}</td>
+                <td>{{ t.texto }}</td>
+                <td>
+                    {% if 'AC' not in t.status_teleconsultoria %}
+                    <form action="{% url 'aceitar_teleconsultoria_view' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Aceitar" onclick="return confirmar_teleconsultoria()">
+                        <input type="hidden" name="id" value="{{ t.id }}">
+                    </form>
+                    {% endif %}
+                    {% if 'CN' not in t.status_teleconsultoria %}
+                    <form action="{% url 'cancelar_teleconsultoria_view' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Cancelar" onclick="return cancelar_teleconsultoria()">
+                        <input type="hidden" name="id" value="{{ t.id }}">
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Nenhuma teleconsultoria registrada</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function confirmar_teleconsultoria(){
+            return confirm("Você tem certeza que deseja confirmar a teleconsultoria?")
+        }
+
+        function cancelar_teleconsultoria(){
+            return confirm("Você tem certeza que deseja cancelar a teleconsultoria?")
+        }
+    </script>
+</body>
+</html>

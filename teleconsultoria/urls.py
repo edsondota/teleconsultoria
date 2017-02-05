@@ -7,7 +7,9 @@ from teleconsultoria.views import EditarTeleconsultorView, ApagarTeleconsultorVi
 from teleconsultoria.views import GerenciarSolicitanteView, AdicionarSolicitanteView
 from teleconsultoria.views import EditarSolicitanteView, ApagarSolicitanteView
 from teleconsultoria.views import LoginSolicitanteView, PainelSolicitanteView
-from teleconsultoria.views import AdicionarTeleconsultoriaView
+from teleconsultoria.views import AdicionarTeleconsultoriaView, LoginTeleconsultorView
+from teleconsultoria.views import PainelTeleconsultorView, AceitarTeleconsultoriaView
+from teleconsultoria.views import CancelarTeleconsultoriaView
 
 urlpatterns = [
     url(r'^$', LoginView.as_view(), name="login_view"),
@@ -45,5 +47,15 @@ urlpatterns = [
     url(r'solicitante/adicionar-teleconsultoria$',
         login_required(AdicionarTeleconsultoriaView.as_view()),
         name="adicionar_teleconsultoria_view"),
+    url(r'login-teleconsultor$', LoginTeleconsultorView.as_view(), name="login_teleconsultor_view"),
+    url(r'teleconsultor/painel$',
+        login_required(PainelTeleconsultorView.as_view()),
+        name="painel_teleconsultor_view"),
+    url(r'teleconsultor/aceitar_teleconsultoria_view$',
+        login_required(AceitarTeleconsultoriaView.as_view()),
+        name="aceitar_teleconsultoria_view"),
+    url(r'teleconsultor/cancelar-teleconsultoria$',
+        login_required(CancelarTeleconsultoriaView.as_view()),
+        name="cancelar_teleconsultoria_view"),
     url(r'^admin/', include(admin.site.urls)),
 ]

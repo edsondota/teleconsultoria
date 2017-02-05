@@ -49,6 +49,15 @@ class BaseSolicitanteView(View):
         return super(BaseSolicitanteView, self).dispatch(*args, **kwargs)
 
 
+class BaseTeleconsultorView(View):
+    def dispatch(self, *args, **kwargs):
+        request = self.request
+        if not request.user.teleconsultor:
+            messages.error(request, 'Você não tem acesso a esta função')
+            return redirect('logout_view')
+        return super(BaseTeleconsultorView, self).dispatch(*args, **kwargs)
+
+
 class PainelAdminView(BaseAdminView):
     def get(self, request):
         return render(request, 'teleconsultoria/painel_admin.html', locals())
@@ -274,3 +283,54 @@ class AdicionarTeleconsultoriaView(BaseSolicitanteView):
         except:
             messages.error(request, 'Ocorreu um erro ao salvar a teleconsultoria')
             return redirect('adicionar_teleconsultoria_view')
+
+
+class LoginTeleconsultorView(View):
+    def get(self, request):
+        return render(request, 'teleconsultoria/login_teleconsultor.html', locals())
+
+    def post(self, request):
+        if request.POST.get('username') and request.POST.get('password'):
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None and user.is_active and user.teleconsultor:
+                login(request, user)
+                return redirect('painel_teleconsultor_view')
+        messages.error(request, 'Não foi possível realizar seu login')
+        return redirect('login_teleconsultor_view')
+
+
+class PainelTeleconsultorView(BaseTeleconsultorView):
+    def get(self, request):
+        teleconsultorias = Teleconsultoria.objects.filter(teleconsultor=request.user.teleconsultor)
+        teleconsultor = request.user.teleconsultor
+        return render(request, 'teleconsultoria/painel_teleconsultor.html', locals())
+
+class AceitarTeleconsultoriaView(BaseTeleconsultorView):
+    def post(self, request):
+        teleconsultoria = None
+        try:
+            teleconsultoria = Teleconsultoria.objects.get(id=request.POST['id'])
+        except:
+            messages.error(request, 'Não foi possível encontrar a teleconsultoria')
+            return redirect('painel_teleconsultor_view')
+        teleconsultoria.status_teleconsultoria = Teleconsultoria.ACEITA
+        teleconsultoria.save()
+        messages.success(request, 'Teleconsultoria aceita')
+        return redirect('painel_teleconsultor_view')
+
+
+class CancelarTeleconsultoriaView(BaseTeleconsultorView):
+    def post(self, request):
+        teleconsultoria = None
+        try:
+            teleconsultoria = Teleconsultoria.objects.get(id=request.POST['id'])
+        except:
+            messages.error(request, 'Não foi possível encontrar a teleconsultoria')
+            return redirect('painel_teleconsultor_view')
+        teleconsultoria.status_teleconsultoria = Teleconsultoria.CANCELADO
+        teleconsultoria.save()
+        messages.success(request, 'Teleconsultoria cancelada')
+        return redirect('painel_teleconsultor_view')
+
