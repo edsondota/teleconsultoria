@@ -124,3 +124,33 @@ class GerenciarSolicitanteView(View):
     def get(self, request):
         solicitantes = Solicitante.objects.all()
         return render(request, 'teleconsultoria/gerenciar_solicitante.html', locals())
+
+
+class AdicionarSolicitanteView(View):
+    def get(self, request):
+        return render(request, 'teleconsultoria/adicionar_solicitante.html', locals())
+
+    def post(self, request):
+        username = request.POST['username']
+        password = request.POST['password']
+        email = request.POST['email']
+        nome = request.POST['nome']
+        cpf = request.POST['cpf']
+        telefone = request.POST['telefone']
+        usuario = None
+        try:
+            usuario = User.objects.create_user(
+                    username=username, password=password, email=email)
+            solicitante = Solicitante.objects.create(
+                    user = usuario,
+                    nome = nome,
+                    telefone = telefone,
+                    cpf = cpf,
+            )
+        except:
+            if usuario:
+                usuario.delete()
+            messages.error(request, u'Não foi possível cadastrar o Solicitante')
+            return redirect('adicionar_solicitante_view')
+        messages.success(request, u'Solicitante cadastrado com sucesso')
+        return redirect('gerenciar_solicitante_view')
