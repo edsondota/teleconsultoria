@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Teleconsultoria - Adicionar Teleconsultoria</title>
+</head>
+<body>
+    <h1>Adicionar Teleconsultoria</h1>
+
+    <p>
+        <a href="{% url 'painel_solicitante_view' %}">Voltar para painel</a>
+    </p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <div>
+        <form action="{% url 'adicionar_teleconsultoria_view' %}" method="POST">
+            {% csrf_token %}
+            <p>
+                <label for="teleconsultor">Teleconsultor</label> <br>
+                <select id="teleconsultor" name="teleconsultor" required>
+                    <option value="">Selecione o Teleconsultor</option>
+                    {% for t in teleconsultores %}
+                    <option value="{{ t.id }}">{{ t.nome }} - {{ t.crm }}</option>
+                    {% endfor %}
+                </select>
+            </p>
+
+            <p>
+                <label for="agendamento_teleconsultoria">Agendamento Teleconsultoria</label> <br>
+                <input type="datetime" name="agendamento_teleconsultoria" id="agendamento_teleconsultoria" required>
+            </p>
+
+            <p><input type="submit" value="Salvar"></p>
+        </form>
+    </div>
+</body>
+</html>

@@ -243,4 +243,11 @@ class LoginSolicitanteView(View):
 class PainelSolicitanteView(BaseSolicitanteView):
     def get(self, request):
         teleconsultorias = Teleconsultoria.objects.filter(solicitante=request.user.solicitante)
+        solicitante = request.user.solicitante
         return render(request, 'teleconsultoria/painel_solicitante.html', locals())
+
+
+class AdicionarTeleconsultoriaView(BaseSolicitanteView):
+    def get(self, request):
+        teleconsultores = Teleconsultor.objects.all()
+        return render(request, 'teleconsultoria/adicionar_teleconsultoria.html', locals())

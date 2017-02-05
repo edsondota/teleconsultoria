@@ -13,6 +13,17 @@ class Solicitante(models.Model):
     nome = models.CharField(max_length=255)
     telefone = models.CharField(max_length=25)
     cpf = models.CharField(max_length=11, unique=True)
+
+    @property
+    def pode_criar_teleconsultoria(self):
+        dia_atual = datetime.datetime.now()
+        teleconsultoria = self.teleconsultoria_set.filter(solicitante=self,
+                data_criacao__year=dia_atual.year,
+                data_criacao__month=dia_atual.month,
+                data_criacao__day=dia_atual.day)
+        if teleconsultoria:
+            return False
+        return True
     
 
 class Teleconsultor(models.Model):

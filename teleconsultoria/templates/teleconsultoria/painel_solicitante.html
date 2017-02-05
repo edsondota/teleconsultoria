@@ -11,7 +11,12 @@
         <a href="{% url 'logout_view' %}">sair</a>.
     </p>
 
-    <p><a href="#">Adicionar Solicitação</a></p>
+    {% if solicitante.pode_criar_teleconsultoria %}
+    <p><a href="{% url 'adicionar_teleconsultoria_view' %}">
+            Adicionar Solicitação</a></p>
+    {% else %}
+    <p>Você não pode criar solicitações para o dia de hoje</p>
+    {% endif %}
 
     <table border="1" width="100%">
         <thead>
